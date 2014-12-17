@@ -1,9 +1,6 @@
 <?php
 
-Route::get('/', function()
-{
-	return link_to('hello') . ' - ' . link_to('invoice');
-});
+Route::get('/', 'HomeController@index');
 
 // Contoh basic
 Route::get('/hello', function()
@@ -27,6 +24,19 @@ Route::get('/invoice', function()
 	$invoice = (object) $data;
 
 	$pdf = PDF::loadView('invoice', compact('invoice'));
+
+	return $pdf->stream();
+});
+
+
+// Contoh menggunakan Eloquent berdasarkan CLIENT
+Route::get('/client/{id}', function($id)
+{
+	$client = Client::find($id);
+
+	// return View::make('client-invoice', compact('client'));
+
+	$pdf = PDF::loadView('client-invoice', compact('client'));
 
 	return $pdf->stream();
 });
